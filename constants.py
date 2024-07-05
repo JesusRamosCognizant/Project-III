@@ -32,7 +32,7 @@ CLEAN_CHARS = ",.:;!?\n()[]'\""
 class TextDataset(Dataset):
     def __init__(self, X, y):
         self.X = torch.tensor(X, dtype=torch.long)
-        self.y = torch.tensor(y, dtype=torch.float)
+        self.y = torch.tensor(y, dtype=torch.long)
         
 
     def __len__(self):

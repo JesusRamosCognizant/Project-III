@@ -22,7 +22,7 @@ criterion = nn.CrossEntropyLoss()
 
 
 # Training variables 
-epochs = 5
+epochs = 500
 patience = 20  # Number of epochs to wait for improvement
 lr = 0.001
 
