@@ -7,6 +7,9 @@ import constants as const
 # Text path
 const.PATH_U = ""
 
+# Determine device on which to run, True -> gpu; False -> cpu
+gpu_running = False
+
 # Variables for division of text
 dividers = const.DIVIDERS_ORIGINAL
 clean_cover = False

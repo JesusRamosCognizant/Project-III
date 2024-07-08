@@ -142,12 +142,16 @@ Parameters:
     input_seq_pad - List of data  
     total_words - Total number of different words 
 '''
-def split_xy (input_seq_pad: list, total_words: int):
+def split_xy (input_seq_pad: list, total_words: int, gpu_running: bool):
     X = input_seq_pad[:, :-1]
     y = input_seq_pad[:, -1]
 
     # Convert output to one-hot encoded vectors
-    y = np.array(torch.nn.functional.one_hot(torch.tensor(y), num_classes=total_words))
+    if gpu_running:
+        y_tensor = torch.tensor(y, dtype=torch.int64)
+        y = F.one_hot(y_tensor, num_classes=total_words)
+    else:
+        y = np.array(torch.nn.functional.one_hot(torch.tensor(y), num_classes=total_words))
 
     return X, y
 
@@ -162,13 +166,15 @@ Parameters:
     epochs - Int with number of train cycles
     patience - Int with number of cycles till stop if no improvement
 '''
-def training_model (model, dataloader, criterion, optimizer, epochs: int, patience: int):
+def training_model (model, dataloader, criterion, optimizer, epochs: int, patience: int, gpu_running: bool):
     current_patience = patience
     best_loss = float('inf')  # Initialize best loss to a very high value
     better_model = model
     for epoch in range(epochs):
         # Training loop
         for i, (inputs, labels) in enumerate(dataloader):
+            if gpu_running:
+                X_batch, y_batch = X_batch.cuda(), y_batch.cuda()  # Mover datos a la GPU
             outputs = model(inputs)
             loss = criterion(outputs, labels.argmax(dim=1))
 
