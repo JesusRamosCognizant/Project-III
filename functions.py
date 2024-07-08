@@ -214,7 +214,7 @@ def predict_model (better_model, next_words: int, seed_text: str, word_to_idx: d
     idx_to_word = {idx: word for word, idx in word_to_idx.items()}
 
     better_model.eval()  # Set the model to evaluation
-    for _ in range(next_words):
+    for _ in range(int(next_words)):
         tokens = word_tokenize(seed_text)
         token_list = [word_to_idx[word] for word in tokens if word in word_to_idx]
         token_list = np.pad(token_list, (max_sequence_len - len(token_list), 0), mode='constant')
